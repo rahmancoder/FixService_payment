@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
 import config from "./config";
+import { authRoutes } from "./modules/auth/auth.route";
 
 
 
@@ -18,9 +19,21 @@ app.use(cookieParser())
 
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("Author Mustafizur Rahman FixService Backend");
+    // res.send("Author Mustafizur Rahman FixService Backend");
+
+    res.status(200).json({
+        message: "Mustafizur Rahman FixService Backend",
+        author: "Md. Mustafizur Rahman",
+    });
 });
 
+app.use("/api/auth", authRoutes);
 
+// app.use("/api/");
+
+
+
+// not found route here
+// global error handler here
 
 export default app;

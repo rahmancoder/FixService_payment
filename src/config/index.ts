@@ -11,5 +11,7 @@ export default {
 
     app_url: process.env.APP_URL,
 
+    bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS
+
 
 }
