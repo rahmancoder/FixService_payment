@@ -1,0 +1,29 @@
+{
+  "name": "fixservice_payment",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000F\u0000i\u0000x\u0000S\u0000e\u0000r\u0000v\u0000i\u0000c\u0000e\u0000_\u0000p\u0000a\u0000y\u0000m\u0000e\u0000n\u0000t\u0000\r\u0000 \u0000",
+  "main": "server.ts",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahmancoder/FixService_payment.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/rahmancoder/FixService_payment/issues"
+  },
+  "homepage": "https://github.com/rahmancoder/FixService_payment#readme",
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "@types/pg": "^8.20.0",
+    "prisma": "^7.8.0",
+    "tsx": "^4.23.0",
+    "typescript": "^6.0.3"
+  }
+}
