@@ -61,7 +61,23 @@ const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunct
     });
 });
 
+
+const getLoggedInUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user; // Assuming you have a middleware that sets req.user after authentication
+
+    const result = await authService.getLoggedInUserFromDB(user);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Logged-in user retrieved successfully",
+        data: user
+    });
+});
+
+
 export const authController = {
     registerUser,
     loginUser,
+    getLoggedInUser
 };

@@ -33,6 +33,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/technician", technicianRoutes);
 
 
+app.use("/api/services", serviceRoutes);
+
+
+
 // app.use("/api/");
 
 
