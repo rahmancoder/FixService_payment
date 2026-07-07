@@ -24,9 +24,43 @@ const updateTechnicianProfileIntoDB = async (
     return prisma.technicianProfile.update({ where: { userId }, data: payload });
 };
 
+
+
+
+
+
 // 02
-const updateTechnicianAvailabilityIntoDB = async (payload: any) => {
-    // Implementation for updating technician availability in the database
+const updateTechnicianAvailabilityIntoDB = async (
+    userId: string,
+    slots: {
+        dayOfWeek: string;
+        startTime: string;
+        endTime: string;
+        isActive?: boolean;
+    }[]
+) => {
+    const profile = await prisma.technicianProfile.findUnique({ where: { userId } });
+
+    if (!profile) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Technician profile not found');
+    }
+
+    return prisma.$transaction(async tx => {
+        await tx.availability.deleteMany({ where: { technicianId: profile.id } });
+
+        await tx.availability.createMany({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            data: slots.map(slot => ({
+                technicianId: profile.id,
+                dayOfWeek: slot.dayOfWeek,
+                startTime: slot.startTime,
+                endTime: slot.endTime,
+                isActive: slot.isActive ?? true,
+            })) as any,
+        });
+
+        return tx.availability.findMany({ where: { technicianId: profile.id } });
+    });
 };
 
 

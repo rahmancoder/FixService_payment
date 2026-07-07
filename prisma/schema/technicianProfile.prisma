@@ -14,9 +14,9 @@ model TechnicianProfile {
 
     services Service[]
 
-    totalReviews Int @default(0)
+    availability Availability[]
 
-    updatedAt DateTime @updatedAt
+    totalReviews Int @default(0)
 
     @@map("technician_profiles")
 }

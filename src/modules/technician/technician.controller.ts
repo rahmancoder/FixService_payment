@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 
 import httpStatus from "http-status";
 import { technicianService } from "./technician.service";
+import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
 
 
 // 01
@@ -38,14 +40,23 @@ const updateTechnicianProfile = async (req: Request, res: Response) => {
 // 02
 
 
-const updateTechnicianAvailability = async (req: Request, res: Response) => {
-    try {
-        // Assuming you have a service function to get bookings for a technician
-    }
+const updateTechnicianAvailability = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    catch (error) { }
+    const userId = req.user?.id;
+
+    const slots = req.body.slots;
+    const result = await technicianService.updateTechnicianAvailabilityIntoDB(userId as string, slots);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Availability updated successfully',
+        data: result,
+    });
 
 }
+
+
+);
 
 
 
