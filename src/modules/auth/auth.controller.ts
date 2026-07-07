@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import httpStatus from "http-status";
 import { authService } from "./auth.service";
 import { sendResponse } from "../../utils/sendResponse";
+import { catchAsync } from "../../utils/catchAsync";
 
 const registerUser = async (req: Request, res: Response) => {
     try {
@@ -33,8 +34,7 @@ const registerUser = async (req: Request, res: Response) => {
     // res.status(201).json({ message: "User registered successfully" });
 }
 
-const loginUser = async (req: Request, res: Response) => {
-
+const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
 
     const { accessToken, refreshToken } = await authService.loginUserIntoDB(payload);
@@ -59,12 +59,7 @@ const loginUser = async (req: Request, res: Response) => {
         message: "User logged in successfully",
         data: { accessToken, refreshToken }
     });
-
-
-
-
-    // res.status(200).json({ message: "User logged in successfully" });
-}
+});
 
 export const authController = {
     registerUser,
