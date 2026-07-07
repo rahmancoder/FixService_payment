@@ -4,6 +4,7 @@ import config from "../../config";
 import { ILoginUser, IRegisterUser } from "./auth.interface";
 import { jwtUtils } from "../../utils/jwt";
 import { SignOptions } from "jsonwebtoken";
+import { Role } from "../../../generated/prisma/client";
 
 
 
@@ -20,6 +21,14 @@ const registerUserIntoDB = async (payload: IRegisterUser) => {
 
     if (isUserExist) {
         throw new Error("User with this email already exists");
+    }
+
+
+
+    if (![Role.CUSTOMER, Role.TECHNICIAN].includes(role)) {
+        throw new Error(
+            "Only CUSTOMER and TECHNICIAN roles are allowed during registration."
+        );
     }
 
 
