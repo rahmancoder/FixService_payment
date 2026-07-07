@@ -8,7 +8,11 @@ import { technicianService } from "./technician.service";
 const updateTechnicianProfile = async (req: Request, res: Response) => {
     try {
         const payload = req.body;
-        const technician = await technicianService.updateTechnicianProfileIntoDB(payload);
+
+        const userId = req.user?.id;
+
+        const technician = await technicianService.updateTechnicianProfileIntoDB(userId as string, payload);
+
         res.status(httpStatus.OK).json({
             success: true,
             statusCode: httpStatus.OK,
