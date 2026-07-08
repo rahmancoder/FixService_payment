@@ -12,6 +12,8 @@ import { reviewRoutes } from "./modules/review/review.route";
 
 
 
+
+
 const app: Application = express();
 
 app.use(cors({
@@ -58,6 +60,9 @@ app.use("/api/payments", paymentRoutes);
 
 app.use("/api/reviews", reviewRoutes);
 
+
+app.use("/api/categories", categoriesRoutes);
+app.use("/api/admin", adminRoutes);
 
 
 
