@@ -63,15 +63,18 @@ const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunct
 
 
 const getLoggedInUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user; // Assuming you have a middleware that sets req.user after authentication
+    const userId = req.user?.id; // Assuming you have a middleware that sets req.user after authentication
+    console.log(req.user);
 
-    const result = await authService.getLoggedInUserFromDB(user);
+    console.log(userId);
+
+    const result = await authService.getLoggedInUserFromDB(userId as string);
 
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
         message: "Logged-in user retrieved successfully",
-        data: user
+        data: { result }
     });
 });
 

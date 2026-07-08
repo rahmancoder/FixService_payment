@@ -181,10 +181,14 @@ const loginUserIntoDB = async (payload: ILoginUser) => {
 
 
 
-const getLoggedInUserFromDB = async (user: any) => {
-    const loggedInUser = await prisma.user.findUnique({
+const getLoggedInUserFromDB = async (userId: string) => {
+    const user = userId;
+    // const loggedInUser = await prisma.user.findUniqueOrThrow({
+
+    const loggedInUser = await prisma.user.findUniqueOrThrow({
+
         where: {
-            id: user.id
+            id: userId
         },
         omit: {
             password: true

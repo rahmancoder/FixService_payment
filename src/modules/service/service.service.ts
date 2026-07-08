@@ -53,7 +53,7 @@ const getAllServicesFromDB = async (filters: IServiceFilters) => {
 
     const { searchTerm, categoryId, ...paginationOptions } = filters;
 
-    const { page, limit, skip, sortBy, sortOrder } = paginationHelper.calculatePagination(paginationOptions);
+    const { page, limit, skip } = paginationHelper.calculatePagination(paginationOptions);
 
     const andConditions: Prisma.ServiceWhereInput[] = [
         {
@@ -93,10 +93,6 @@ const getAllServicesFromDB = async (filters: IServiceFilters) => {
         where: whereConditions,
         skip,
         take: limit,
-        orderBy:
-        {
-            [sortBy]: sortOrder
-        },
 
         include:
         {

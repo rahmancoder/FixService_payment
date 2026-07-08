@@ -100,7 +100,7 @@ const getAllTechniciansFromDB = async (filters: ITechnicianFilters) => {
 
     const { searchTerm, location, skill, ...paginationOptions } = filters;
 
-    const { page, limit, skip, sortBy, sortOrder } =
+    const { page, limit, skip, sortOrder } =
         paginationHelper.calculatePagination(paginationOptions);
 
     const andConditions: Prisma.TechnicianProfileWhereInput[] = [];
@@ -156,11 +156,6 @@ const getAllTechniciansFromDB = async (filters: ITechnicianFilters) => {
         where: whereConditions,
         skip,
         take: limit,
-        orderBy:
-        {
-            [sortBy]: sortOrder
-
-        },
         include:
         {
             user:

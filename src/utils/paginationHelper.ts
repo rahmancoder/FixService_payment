@@ -9,7 +9,7 @@ type IOptionsResult = {
     page: number;
     limit: number;
     skip: number;
-    sortBy: string;
+    sortBy?: string;
     sortOrder: 'asc' | 'desc';
 };
 
@@ -18,10 +18,10 @@ const calculatePagination = (options: IOptions): IOptionsResult => {
     const limit = Number(options.limit || 10);
     const skip = (page - 1) * limit;
 
-    const sortBy = options.sortBy || 'createdAt';
+    // const sortBy = options.sortBy || 'createdAt';
     const sortOrder = options.sortOrder || 'desc';
 
-    return { page, limit, skip, sortBy, sortOrder };
+    return { page, limit, skip, sortOrder };
 };
 
 export const paginationHelper = { calculatePagination };

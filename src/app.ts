@@ -7,6 +7,7 @@ import { technicianRoutes } from "./modules/technician/technician.route";
 import { serviceRoutes } from "./modules/service/service.route";
 import { bookingRoutes } from "./modules/booking/booking.route";
 import { paymentRoutes } from "./modules/payment/payment.route";
+import { reviewRoutes } from "./modules/review/review.route";
 
 
 
