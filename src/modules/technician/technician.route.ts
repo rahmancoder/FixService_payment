@@ -20,9 +20,9 @@ router.put("/availability", technicianController.updateTechnicianAvailability);
 
 
 
-router.get("/bookings", technicianController.getTechnicianBookings);
+router.get("/bookings", auth(Role.TECHNICIAN), technicianController.getTechnicianBookings);
 
-router.patch("/bookings/:id", technicianController.updateTechnicianBookingsStatus);
+router.patch("/bookings/:id", auth(Role.TECHNICIAN), technicianController.updateTechnicianBookingsStatus);
 
 
 

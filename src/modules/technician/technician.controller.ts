@@ -95,14 +95,18 @@ const getTechnicianById = catchAsync(async (req: Request, res: Response, next: N
 
 // 05
 
-const getTechnicianBookings = async (req: Request, res: Response) => {
-    try {
-        // Assuming you have a service function to get bookings for a technician
-    }
+const getTechnicianBookings = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+    const status = req.query.status;
 
-    catch (error) { }
-
-}
+    const result = await technicianService.getTechnicianBookingsFromDB(userId as string, status as string)
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Technician's bookings retrieved successfully",
+        data: result,
+    });
+});
 
 
 
