@@ -22,6 +22,9 @@ router.post(
     paymentController.createPayment
 );
 
+router.post('/confirm', auth(Role.CUSTOMER), paymentController.confirmPayment);
+
+
 // router.get("/", paymentController.getUserpaymentHistory);
 
 

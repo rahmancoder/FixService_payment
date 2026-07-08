@@ -98,7 +98,92 @@ const createPaymentIntoDB = async (userId: string, bookingId: string) => {
 
 
 
+const confirmPaymentIntoDB = async (sessionId: string) => {
+
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (!session) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Payment session not found');
+    }
+
+    const { bookingId, transactionId } = session.metadata || {};
+
+
+    if (!bookingId || !transactionId) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid payment session metadata');
+    }
+
+
+    const payment = await prisma.payment.findUnique({
+        where:
+        {
+            transactionId
+        }
+
+    });
+
+    if (!payment) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Payment record not found');
+    }
+
+    if (session.payment_status === 'paid') {
+
+        const updatedPayment = await prisma.$transaction(async tx => {
+
+            const p = await tx.payment.update({
+                where:
+                {
+                    transactionId
+                },
+
+                data:
+                {
+                    status: 'COMPLETED',
+                    method: session.payment_method_types?.[0] || 'card',
+                    paidAt: new Date(),
+                },
+
+            });
+
+            await tx.booking.update({
+                where:
+                {
+                    id: bookingId
+                },
+                data:
+                {
+                    status: 'PAID'
+                }
+
+            });
+
+            return p;
+        });
+
+        return updatedPayment;
+    }
+
+    await prisma.payment.update({
+        where:
+        {
+            transactionId
+        },
+        data:
+        {
+            status: 'FAILED'
+        }
+
+    });
+
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Payment was not completed successfully');
+};
+
+
+
+
 export const paymentService = {
     createPaymentIntoDB,
+    confirmPaymentIntoDB,
+
 
 };
