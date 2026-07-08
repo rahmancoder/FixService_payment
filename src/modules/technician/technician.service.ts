@@ -244,10 +244,51 @@ const getTechnicianBookingsFromDB = async (technicianId: string) => {
 
 
 // 06
-const updateTechnicianBookingsIntoDB = async (technicianId: string) => {
-    // Implementation for updating technician bookings in the database
-};
 
+const updateTechnicianBookingsStatusIntoDB = async (
+    technicianId: string,
+    bookingId: string,
+    status: 'ACCEPTED' | 'DECLINED' | 'IN_PROGRESS' | 'COMPLETED') => {
+
+    const profile = await prisma.technicianProfile.findUnique({
+        where:
+        {
+            id: technicianId
+        }
+    });
+
+
+    if (!profile) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Technician profile not found');
+    }
+
+
+    const booking = await prisma.booking.findUnique({
+        where:
+        {
+            id: bookingId
+
+        }
+    });
+
+    if (!booking || booking.technicianId !== profile.id) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found for this technician');
+    }
+
+
+
+    return prisma.booking.update({
+        where:
+        {
+            id: bookingId
+        },
+
+        data:
+        {
+            status
+        }
+    });
+};
 
 
 
@@ -260,5 +301,5 @@ export const technicianService = {
     getTechnicianByIdFromDB,
 
     getTechnicianBookingsFromDB,
-    updateTechnicianBookingsIntoDB,
+    updateTechnicianBookingsStatusIntoDB,
 };

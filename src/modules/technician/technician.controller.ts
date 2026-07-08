@@ -109,14 +109,26 @@ const getTechnicianBookings = async (req: Request, res: Response) => {
 
 
 // 06
-const updateTechnicianBookings = async (req: Request, res: Response) => {
-    try {
-        // Assuming you have a service function to get bookings for a technician
-    }
+const updateTechnicianBookingsStatus = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    catch (error) { }
+    const userId = req.user?.id;
+    const bookingId = req.params.id;
 
-}
+    const status = req.body.status;
+
+    const result = await technicianService.updateTechnicianBookingsStatusIntoDB(
+        userId as string,
+        bookingId as string,
+        status
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Booking status updated successfully',
+        data: result,
+    });
+});
 
 export const technicianController = {
     updateTechnicianProfile,
@@ -125,5 +137,6 @@ export const technicianController = {
     getAllTechnicians,
     getTechnicianById,
     getTechnicianBookings,
-    updateTechnicianBookings,
+
+    updateTechnicianBookingsStatus,
 };

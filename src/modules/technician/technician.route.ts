@@ -19,7 +19,7 @@ router.put("/availability", technicianController.updateTechnicianAvailability);
 
 router.get("/bookings", technicianController.getTechnicianBookings);
 
-router.patch("/bookings/:id", technicianController.updateTechnicianBookings);
+router.patch("/bookings/:id", technicianController.updateTechnicianBookingsStatus);
 
 
 
