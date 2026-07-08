@@ -233,8 +233,8 @@ const getTechnicianByIdFromDB = async (id: string) => {
 
 // 05
 
-const getTechnicianBookingsFromDB = async (userId: string, statusFilter?: string) => {
-    // const getTechnicianBookingsFromDB = async (userId: string) => {
+// const getTechnicianBookingsFromDB = async (userId: string, statusFilter?: string) => {
+const getTechnicianBookingsFromDB = async (userId: string) => {
     const profile = await prisma.technicianProfile.findUnique({
         where:
         {
@@ -251,14 +251,14 @@ const getTechnicianBookingsFromDB = async (userId: string, statusFilter?: string
         where: {
             technicianId: profile.id,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ...(statusFilter ? { status: statusFilter as any } : {}),
+            // ...(statusFilter ? { status: statusFilter as any } : {}),
         },
-        include: {
-            customer: { select: { id: true, name: true, phone: true } },
-            service: true,
-            payment: true,
-        },
-        orderBy: { createdAt: 'desc' },
+        // include: {
+        //     customer: { select: { id: true, name: true } },
+        //     service: true,
+        //     payment: true,
+        // },
+        // orderBy: { createdAt: 'desc' },
     });
 };
 

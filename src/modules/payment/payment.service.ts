@@ -55,7 +55,7 @@ const createPaymentIntoDB = async (userId: string, bookingId: string) => {
                 price_data: {
                     currency: 'bdt',
                     product_data: { name: booking.service.title },
-                    unit_amount: Math.round(booking.service.price * 1),
+                    unit_amount: Math.round(booking.service.price * 100),
                 },
                 quantity: 1,
             },
@@ -86,6 +86,7 @@ const createPaymentIntoDB = async (userId: string, bookingId: string) => {
             amount: booking.service.price,
             provider: 'STRIPE',
             status: 'PENDING',
+            stripeSessionId: session.id,
         },
     });
 

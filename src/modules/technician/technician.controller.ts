@@ -102,8 +102,8 @@ const getTechnicianBookings = catchAsync(async (req: Request, res: Response, nex
     console.log(req.user);
     console.log(userId);
 
-    const result = await technicianService.getTechnicianBookingsFromDB(userId as string, status as string)
-    // const result = await technicianService.getTechnicianBookingsFromDB(userId as string)
+    // const result = await technicianService.getTechnicianBookingsFromDB(userId as string, status as string | undefined)
+    const result = await technicianService.getTechnicianBookingsFromDB(userId as string)
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

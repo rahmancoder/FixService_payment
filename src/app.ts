@@ -32,7 +32,7 @@ app.use(cors({
 // Stripe webhook needs the raw request body for signature verification,
 // so it must be registered BEFORE the json() body parser below.
 app.post(
-    '/api/payments',
+    '/api/payments/webhook',
     express.raw({ type: 'application/json' })
 );
 

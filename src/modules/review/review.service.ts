@@ -66,7 +66,7 @@ const createReviewIntoDB = async (
 
             data:
             {
-                avgRating: stats._avg.rating || 0,
+                // avgRating: stats._avg.rating || 0,
                 totalReviews: stats._count.rating,
             },
         });
