@@ -12,12 +12,12 @@ router.get('/', categoryController.getAllCategories);
 router.get('/:id', categoryController.getCategoryById);
 
 
-router.post(
-    '/',
-    auth(Role.ADMIN),
+// router.post(
+//     '/',
+//     auth(Role.ADMIN),
 
-    categoryController.createCategory
-);
+//     categoryController.createCategory
+// );
 
 
 export const categoryRoutes = router;

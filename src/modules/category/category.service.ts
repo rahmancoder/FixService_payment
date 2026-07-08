@@ -4,29 +4,39 @@ import ApiError from "../../middlewares/ApiError";
 import httpStatus from "http-status";
 
 
-const createCategoryIntoDB = async (
-    payload: {
-        name: string;
-        description?: string
-    }) => {
-    const existing = await prisma.category.findUnique({
+const getAllCategoriesFromDB = async () => {
+
+    return prisma.category.findMany({
+
+        orderBy:
+        {
+            name: 'asc'
+        }
+    });
+};
+
+
+const getCategoryByIdFromDB = async (id: number) => {
+
+    const category = await prisma.category.findUnique({
         where:
         {
-            name: payload.name
+            id
         }
     });
 
 
-    if (existing) {
-        throw new ApiError(httpStatus.CONFLICT, 'Category with this name already exists');
+    if (!category) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Category not found');
     }
-    return prisma.category.create({
-        data: payload
-    });
-
+    return category;
 };
+
+
+
 
 export const categoryService = {
 
-    createCategoryIntoDB,
+    getAllCategoriesFromDB,
+    getCategoryByIdFromDB,
 }

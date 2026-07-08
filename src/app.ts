@@ -8,6 +8,10 @@ import { serviceRoutes } from "./modules/service/service.route";
 import { bookingRoutes } from "./modules/booking/booking.route";
 import { paymentRoutes } from "./modules/payment/payment.route";
 import { reviewRoutes } from "./modules/review/review.route";
+import { categoryRoutes } from "./modules/category/category.route";
+import { adminRoutes } from "./modules/admin/admin.route";
+import { notFound } from "./middlewares/notFound";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 
 
@@ -61,7 +65,8 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 
 
-app.use("/api/categories", categoriesRoutes);
+app.use("/api/categories", categoryRoutes);
+
 app.use("/api/admin", adminRoutes);
 
 
@@ -73,6 +78,10 @@ app.use("/api/admin", adminRoutes);
 
 
 // not found route here
+app.use(notFound);
+
 // global error handler here
+app.use(globalErrorHandler);
+
 
 export default app;
