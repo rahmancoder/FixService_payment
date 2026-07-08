@@ -10,7 +10,8 @@ model Service {
     technician   TechnicianProfile @relation(fields: [technicianId], references: [id], onDelete: Cascade)
     technicianId String
 
-    isActive Boolean @default(true)
+    bookings Booking[]
+    isActive Boolean   @default(true)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

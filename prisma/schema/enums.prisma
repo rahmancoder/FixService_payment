@@ -18,3 +18,24 @@ enum DayOfWeek {
     FRIDAY
     SATURDAY
 }
+
+enum BookingStatus {
+    REQUESTED
+    ACCEPTED
+    DECLINED
+    PAID
+    IN_PROGRESS
+    COMPLETED
+    CANCELLED
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    FAILED
+}
+
+enum PaymentProvider {
+    STRIPE
+    SSLCOMMERZ
+}

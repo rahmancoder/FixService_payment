@@ -18,5 +18,8 @@ model TechnicianProfile {
 
     totalReviews Int @default(0)
 
+    bookings Booking[] @relation("TechnicianBookings")
+    reviews  Review[]  @relation("TechnicianReviews")
+
     @@map("technician_profiles")
 }
