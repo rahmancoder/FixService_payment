@@ -9,11 +9,15 @@ const router = Router();
 
 
 // get all users
-router.get("");
+router.get('/users', auth(Role.ADMIN), adminController.getAllUsers);
 
 
 // update user status ban/unban
-router.patch("/");
+router.patch(
+    '/users/:id',
+    auth(Role.ADMIN),
+    adminController.updateUserStatus
+);
 
 
 

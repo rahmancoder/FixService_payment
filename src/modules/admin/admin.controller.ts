@@ -19,6 +19,36 @@ const createCategory = catchAsync(async (req: Request, res: Response, next: Next
 });
 
 
+const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const result = await adminService.getAllUsersFromDB(req.query);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Users retrieved successfully',
+        meta: result.meta,
+        data: result.data,
+    });
+});
+
+
+const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const status = req.body.status;
+
+    const result = await adminService.updateUserStatusIntoDB(userId as string, status);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User status updated successfully',
+        data: result,
+    });
+});
+
 export const adminController = {
     createCategory,
+    getAllUsers,
+    updateUserStatus,
 };
