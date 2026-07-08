@@ -234,7 +234,7 @@ const getTechnicianByIdFromDB = async (id: string) => {
 // 05
 
 const getTechnicianBookingsFromDB = async (userId: string, statusFilter?: string) => {
-
+    // const getTechnicianBookingsFromDB = async (userId: string) => {
     const profile = await prisma.technicianProfile.findUnique({
         where:
         {
@@ -273,7 +273,7 @@ const updateTechnicianBookingsStatusIntoDB = async (
     const profile = await prisma.technicianProfile.findUnique({
         where:
         {
-            id: technicianId
+            userId: technicianId
         }
     });
 

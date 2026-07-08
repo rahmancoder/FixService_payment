@@ -12,6 +12,7 @@ import { categoryRoutes } from "./modules/category/category.route";
 import { adminRoutes } from "./modules/admin/admin.route";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { userRoutes } from "./modules/user/user.route";
 
 
 
@@ -51,8 +52,8 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/auth", authRoutes);
 
+//added new route
 app.use("/api/users", userRoutes);
-
 
 app.use("/api/technician", technicianRoutes);
 

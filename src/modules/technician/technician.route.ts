@@ -15,7 +15,7 @@ router.put("/profile",
     technicianController.updateTechnicianProfile);
 // router.post("/availability", technicianController.loginUser);
 
-router.put("/availability", technicianController.updateTechnicianAvailability);
+router.put("/availability", auth(Role.TECHNICIAN), technicianController.updateTechnicianAvailability);
 
 
 

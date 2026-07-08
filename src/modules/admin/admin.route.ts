@@ -22,11 +22,11 @@ router.patch(
 
 
 // get all bookings
-router.get("/");
+// router.get("/");
 
 
-// get all categories
-router.get("");
+// // get all categories
+// router.get("");
 
 
 // create new service category
