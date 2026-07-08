@@ -55,6 +55,9 @@ app.use("/api/bookings", bookingRoutes);
 
 app.use("/api/payments", paymentRoutes);
 
+app.use("/api/reviews", reviewRoutes);
+
+
 
 
 
