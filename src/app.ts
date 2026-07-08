@@ -18,6 +18,16 @@ app.use(cors({
     credentials: true,
 }))
 
+
+// const endpointSecret = config.stripe_webhook_secret;
+
+// Stripe webhook needs the raw request body for signature verification,
+// so it must be registered BEFORE the json() body parser below.
+app.post(
+    '/api/payments',
+    express.raw({ type: 'application/json' })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())

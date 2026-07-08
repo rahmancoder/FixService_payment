@@ -179,11 +179,67 @@ const confirmPaymentIntoDB = async (sessionId: string) => {
 };
 
 
+const handleWebhookEvent = async (event: {
+    type: string;
+    data:
+    {
+        object:
+        {
+            metadata?: Record<string, string>;
+            payment_method_types?: string[]
+        }
+    };
+}) => {
+
+    if (event.type === 'checkout.session.completed') {
+
+        const session = event.data.object;
+        const transactionId = session.metadata?.transactionId;
+
+        const bookingId = session.metadata?.bookingId;
+
+        if (transactionId && bookingId) {
+            await prisma.$transaction(async tx => {
+                await tx.payment.update({
+                    where:
+                    {
+                        transactionId
+                    },
+
+                    data:
+                    {
+                        status: 'COMPLETED',
+                        method: session.payment_method_types?.[0] || 'card',
+                        paidAt: new Date(),
+                    },
+                });
+
+                await tx.booking.update({
+                    where:
+                    {
+                        id: bookingId
+                    },
+                    data:
+                    {
+                        status: 'PAID'
+                    }
+                });
+
+            });
+        }
+    }
+
+    return {
+        received: true
+    };
+};
+
 
 
 export const paymentService = {
     createPaymentIntoDB,
     confirmPaymentIntoDB,
+    handleWebhookEvent,
 
 
 };
