@@ -4,6 +4,9 @@ import express, { Application, Request, Response } from "express";
 import config from "./config";
 import { authRoutes } from "./modules/auth/auth.route";
 import { technicianRoutes } from "./modules/technician/technician.route";
+import { serviceRoutes } from "./modules/service/service.route";
+import { bookingRoutes } from "./modules/booking/booking.route";
+
 
 
 
@@ -34,6 +37,10 @@ app.use("/api/technician", technicianRoutes);
 
 
 app.use("/api/services", serviceRoutes);
+
+
+app.use("/api/bookings", bookingRoutes);
+
 
 
 
