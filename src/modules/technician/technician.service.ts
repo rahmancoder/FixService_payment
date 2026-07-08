@@ -191,15 +191,59 @@ const getAllTechniciansFromDB = async (filters: ITechnicianFilters) => {
 };
 
 
-
 // 04
+
+const getTechnicianByIdFromDB = async (id: string) => {
+
+    const technician = await prisma.technicianProfile.findUnique({
+
+        where:
+        {
+            id
+
+        },
+
+        include:
+        {
+            user:
+            {
+                select:
+                {
+                    id: true,
+                    name: true,
+                    email: true
+
+                }
+            },
+
+            services:
+            {
+                include:
+                {
+                    category: true
+                }
+            },
+            availability: true,
+
+        },
+    });
+
+    if (!technician) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Technician not found');
+    }
+
+    return technician;
+};
+
+
+// 05
 const getTechnicianBookingsFromDB = async (technicianId: string) => {
     // Implementation for fetching technician bookings from the database
 };
 
 
 
-// 05
+// 06
 const updateTechnicianBookingsIntoDB = async (technicianId: string) => {
     // Implementation for updating technician bookings in the database
 };
@@ -213,6 +257,7 @@ export const technicianService = {
     updateTechnicianAvailabilityIntoDB,
 
     getAllTechniciansFromDB,
+    getTechnicianByIdFromDB,
 
     getTechnicianBookingsFromDB,
     updateTechnicianBookingsIntoDB,
