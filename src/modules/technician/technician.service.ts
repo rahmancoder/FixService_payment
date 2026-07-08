@@ -1,6 +1,9 @@
 import { prisma } from "../../lib/prisma";
 import ApiError from "../../middlewares/ApiError";
 import httpStatus from 'http-status';
+import { ITechnicianFilters } from "./technician.interface";
+import { paginationHelper } from "../../utils/paginationHelper";
+import { Prisma } from "../../../generated/prisma/client";
 
 
 
@@ -13,15 +16,27 @@ const updateTechnicianProfileIntoDB = async (
         experience: number;
         serviceRate: number;
         location: string;
-    }>
-) => {
-    const profile = await prisma.technicianProfile.findUnique({ where: { userId } });
+    }>) => {
+    const profile = await prisma.technicianProfile.findUnique({
+        where:
+        {
+            userId
+        }
+
+    });
 
     if (!profile) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Technician profile not found');
     }
 
-    return prisma.technicianProfile.update({ where: { userId }, data: payload });
+    return prisma.technicianProfile.update({
+        where:
+        {
+            userId
+        },
+
+        data: payload
+    });
 };
 
 
@@ -39,7 +54,12 @@ const updateTechnicianAvailabilityIntoDB = async (
         isActive?: boolean;
     }[]
 ) => {
-    const profile = await prisma.technicianProfile.findUnique({ where: { userId } });
+    const profile = await prisma.technicianProfile.findUnique({
+        where:
+        {
+            userId
+        }
+    });
 
     if (!profile) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Technician profile not found');
@@ -59,21 +79,127 @@ const updateTechnicianAvailabilityIntoDB = async (
             })) as any,
         });
 
-        return tx.availability.findMany({ where: { technicianId: profile.id } });
+        return tx.availability.findMany({
+            where:
+            {
+                technicianId: profile.id
+            }
+        });
     });
 };
 
 
 
-
 // 03
+
+
+
+
+
+const getAllTechniciansFromDB = async (filters: ITechnicianFilters) => {
+
+    const { searchTerm, location, skill, ...paginationOptions } = filters;
+
+    const { page, limit, skip, sortBy, sortOrder } =
+        paginationHelper.calculatePagination(paginationOptions);
+
+    const andConditions: Prisma.TechnicianProfileWhereInput[] = [];
+
+    if (searchTerm) {
+        andConditions.push({
+            OR: [
+                {
+                    user:
+                    {
+                        name:
+                        {
+                            contains: searchTerm,
+                            mode: 'insensitive'
+                        }
+                    }
+                },
+
+                {
+                    bio:
+                    {
+                        contains: searchTerm,
+                        mode: 'insensitive'
+                    }
+                },
+
+            ],
+        });
+    }
+
+    if (location) andConditions.push({
+        location:
+        {
+            contains: location,
+            mode: 'insensitive'
+        }
+    });
+
+
+    if (skill) andConditions.push({
+        skills:
+        {
+            has: skill
+
+        }
+    });
+
+    const whereConditions: Prisma.TechnicianProfileWhereInput = andConditions.length ? {
+        AND: andConditions
+    } : {};
+
+    const result = await prisma.technicianProfile.findMany({
+        where: whereConditions,
+        skip,
+        take: limit,
+        orderBy:
+        {
+            [sortBy]: sortOrder
+
+        },
+        include:
+        {
+            user:
+            {
+                select:
+                {
+                    id: true,
+                    name: true,
+                    email: true
+
+                }
+            },
+
+            services: true,
+        },
+    });
+
+    const total = await prisma.technicianProfile.count(
+        {
+            where: whereConditions
+        }
+    );
+
+    return {
+        meta: { page, limit, total },
+        data: result
+    };
+};
+
+
+
+// 04
 const getTechnicianBookingsFromDB = async (technicianId: string) => {
     // Implementation for fetching technician bookings from the database
 };
 
 
 
-// 04
+// 05
 const updateTechnicianBookingsIntoDB = async (technicianId: string) => {
     // Implementation for updating technician bookings in the database
 };
@@ -85,6 +211,8 @@ const updateTechnicianBookingsIntoDB = async (technicianId: string) => {
 export const technicianService = {
     updateTechnicianProfileIntoDB,
     updateTechnicianAvailabilityIntoDB,
+
+    getAllTechniciansFromDB,
 
     getTechnicianBookingsFromDB,
     updateTechnicianBookingsIntoDB,
