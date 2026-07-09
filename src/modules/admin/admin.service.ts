@@ -116,9 +116,61 @@ const updateUserStatusIntoDB = async (userId: string, status: 'ACTIVE' | 'BANNED
 
 
 
+const getAllBookingsFromDB = async (filters: {
+    status?: string;
+    page?: string;
+    limit?: string;
+
+}) => {
+    const { status, ...paginationOptions } = filters;
+    const { page, limit, skip } =
+        paginationHelper.calculatePagination(paginationOptions);
+
+
+    const whereConditions = status ? { status: status as any } : {};
+
+    const result = await prisma.booking.findMany({
+        where: whereConditions,
+        skip,
+        take: limit,
+
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true
+                }
+            },
+            technician: {
+                include: {
+                    user: {
+                        select:
+                        {
+                            id: true,
+                            name: true,
+                            email: true
+                        }
+                    }
+                }
+            },
+            service: true,
+            payment: true,
+        },
+    });
+
+    const total = await prisma.booking.count({ where: whereConditions });
+
+    return {
+        meta: { page, limit, total },
+        data: result
+    };
+};
+
 export const adminService = {
 
     createCategoryIntoDB,
     getAllUsersFromDB,
     updateUserStatusIntoDB,
+    getAllBookingsFromDB
 }

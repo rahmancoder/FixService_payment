@@ -24,6 +24,10 @@ router.patch(
 
 // get all bookings
 // router.get("/");
+router.get('/bookings', auth(Role.ADMIN), adminController.getAllBookings);
+
+
+
 
 // public
 // // get all categories
