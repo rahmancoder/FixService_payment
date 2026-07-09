@@ -25,10 +25,10 @@ router.post(
 router.post('/confirm', auth(Role.CUSTOMER), paymentController.confirmPayment);
 
 
-// router.post(
-//     '/',
-//     paymentController.stripeWebhook
-// );
+router.post(
+    '/webhook',
+    paymentController.stripeWebhook
+);
 
 // router.get("/", paymentController.getUserpaymentHistory);
 
