@@ -237,10 +237,59 @@ const handleWebhookEvent = async (event: {
 
 
 
+
+const getMyPaymentsFromDB = async (userId: string) => {
+
+    return prisma.payment.findMany({
+        where: {
+            userId
+        },
+
+        include: {
+            booking: {
+                include: {
+                    service: true
+                }
+            }
+        },
+        orderBy: { createdAt: 'desc' },
+    });
+};
+
+const getPaymentByIdFromDB = async (paymentId: string, userId: string, role: string) => {
+
+    const payment = await prisma.payment.findUnique({
+        where: {
+            id: paymentId
+        },
+
+        include: {
+            booking: {
+                include: {
+                    service: true
+                }
+            }
+        },
+    });
+
+    if (!payment) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Payment not found');
+    }
+
+    if (payment.userId !== userId && role !== 'ADMIN') {
+        throw new ApiError(httpStatus.FORBIDDEN, 'You are not allowed to view this payment');
+    }
+
+    return payment;
+};
+
+
 export const paymentService = {
     createPaymentIntoDB,
     confirmPaymentIntoDB,
     handleWebhookEvent,
+    getMyPaymentsFromDB,
+    getPaymentByIdFromDB
 
 
 };

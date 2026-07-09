@@ -19,8 +19,9 @@ router.put("/availability", auth(Role.TECHNICIAN), technicianController.updateTe
 
 
 
-
-router.get("/bookings", auth(Role.TECHNICIAN), technicianController.getTechnicianBookings);
+// conflicting route with gettechnicianbyID route
+// this route been handled for technician in booking modules
+// router.get("/bookings", auth(Role.TECHNICIAN), technicianController.getTechnicianBookings);
 
 router.patch("/bookings/:id", auth(Role.TECHNICIAN), technicianController.updateTechnicianBookingsStatus);
 

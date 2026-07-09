@@ -32,5 +32,9 @@ router.post('/confirm', auth(Role.CUSTOMER), paymentController.confirmPayment);
 
 // router.get("/", paymentController.getUserpaymentHistory);
 
+router.get('/', auth(Role.CUSTOMER, Role.ADMIN), paymentController.getMyPayments);
+
+router.get('/single/:id', auth(Role.CUSTOMER, Role.TECHNICIAN, Role.ADMIN), paymentController.getPaymentById);
+
 
 export const paymentRoutes = router;

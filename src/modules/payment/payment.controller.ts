@@ -68,10 +68,47 @@ const stripeWebhook = catchAsync(async (req: Request, res: Response) => {
 });
 
 
+const getMyPayments = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const result = await paymentService.getMyPaymentsFromDB(userId as string);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Payment history retrieved successfully',
+        data: result,
+    });
+});
+
+const getPaymentById = catchAsync(async (req: Request, res: Response) => {
+    const paramId = req.params.id;
+    const userId = req.user?.id;
+    const userRole = req.user?.role;
+
+    const result = await paymentService.getPaymentByIdFromDB(
+        paramId as string,
+        userId as string,
+        userRole as string
+    );
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Payment details retrieved successfully',
+        data: result,
+    });
+});
+
+
 export const paymentController = {
 
     createPayment,
     confirmPayment,
     stripeWebhook,
+    getMyPayments,
+    getPaymentById,
 
 };
+
+
+
+
