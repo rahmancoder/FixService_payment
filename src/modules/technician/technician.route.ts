@@ -6,7 +6,7 @@ import { Role } from "../../../generated/prisma/enums";
 const router = Router();
 
 router.get('/', technicianController.getAllTechnicians);
-router.get('/:id', technicianController.getTechnicianById);
+router.get('/single/:id', technicianController.getTechnicianById);
 
 
 
