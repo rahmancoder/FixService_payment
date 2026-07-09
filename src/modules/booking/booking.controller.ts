@@ -33,8 +33,28 @@ const getMyBookings = catchAsync(async (req: Request, res: Response, next: NextF
     });
 });
 
+
+const getBookingById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const paramId = req.params.id;
+    const userId = req.user?.id;
+    const userRole = req.user?.role;
+
+    const result = await bookingService.getBookingByIdFromDB(paramId as string,
+        userId as string, userRole as string);
+
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Booking retrieved successfully',
+        data: result,
+    });
+});
+
+
 export const bookingController = {
     createBooking,
     getMyBookings,
+    getBookingById,
 
 };
