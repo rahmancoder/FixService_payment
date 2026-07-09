@@ -220,6 +220,21 @@ const getTechnicianByIdFromDB = async (id: string) => {
             },
             availability: true,
 
+            reviews:
+            {
+                include:
+                {
+                    customer:
+                    {
+                        select:
+                        {
+                            id: true,
+                            name: true
+                        }
+                    }
+                },
+                orderBy: { createdAt: 'desc' },
+            },
         },
     });
 

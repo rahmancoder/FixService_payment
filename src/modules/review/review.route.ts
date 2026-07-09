@@ -16,4 +16,7 @@ router.post(
 );
 
 // Router.get('/');
+router.get('/technician/:technicianId', reviewController.getReviewsForTechnician);
+
+
 export const reviewRoutes = router;
