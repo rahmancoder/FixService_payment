@@ -38,7 +38,40 @@ const createBookingIntoDB = async (
 };
 
 
+const getMyBookingsFromDB = async (userId: string, role: string) => {
+    if (role === 'CUSTOMER') {
+        return prisma.booking.findMany({
+            where: {
+                customerId: userId
+            },
+            include: {
+                service: true,
+                technician: {
+                    include:
+                    {
+                        user:
+                        {
+                            select:
+                            {
+                                id: true,
+                                name: true
+                            }
+                        }
+                    }
+                },
+                payment: true,
+            },
+            orderBy: { createdAt: 'desc' },
+        });
+    }
+
+    throw new ApiError(httpStatus.FORBIDDEN, 'Only customers can access this endpoint');
+};
+
+
 export const bookingService = {
     createBookingIntoDB,
+    getMyBookingsFromDB,
+
 
 };
