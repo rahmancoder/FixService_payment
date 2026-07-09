@@ -14,6 +14,7 @@ router.get("/me",
     auth(Role.CUSTOMER, Role.TECHNICIAN, Role.ADMIN),
     authController.getLoggedInUser);
 
+router.post("/refresh", authController.refreshToken)
 
 
 export const authRoutes = router;

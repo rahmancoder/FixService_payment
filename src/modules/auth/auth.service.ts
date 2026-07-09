@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma";
 import config from "../../config";
 import { ILoginUser, IRegisterUser } from "./auth.interface";
 import { jwtUtils } from "../../utils/jwt";
-import { SignOptions } from "jsonwebtoken";
+import { JwtPayload, SignOptions } from "jsonwebtoken";
 import { Role } from "../../../generated/prisma/client";
 
 
@@ -124,7 +124,10 @@ const loginUserIntoDB = async (payload: ILoginUser) => {
     // }
 
     const user = await prisma.user.findUniqueOrThrow({
-        where: { email }
+        where: {
+            email
+        }
+
     })
 
     if (user.status === "BANNED") {
@@ -172,7 +175,20 @@ const loginUserIntoDB = async (payload: ILoginUser) => {
         config.jwt_refresh_expires_in as SignOptions
     );
 
+
+    const showUser = await prisma.user.findUniqueOrThrow({
+        where: {
+            email
+        },
+        omit: {
+            password: true
+        }
+    })
+
+
+
     return {
+        showUser,
         accessToken,
         refreshToken
     };
@@ -199,9 +215,47 @@ const getLoggedInUserFromDB = async (userId: string) => {
 };
 
 
+const refreshToken = async (refreshToken: string) => {
+    const verifiedRefreshToken = jwtUtils.verifyToken(refreshToken, config.jwt_refresh_secret);
+
+    if (!verifiedRefreshToken.success) {
+        throw new Error(verifiedRefreshToken.error)
+    }
+
+    const { id } = verifiedRefreshToken.data as JwtPayload;
+
+    const user = await prisma.user.findUniqueOrThrow({
+        where: {
+            id
+        }
+    })
+
+    if (user.status === "BANNED") {
+        throw new Error("User is BANNED!")
+    }
+
+    const jwtPayload = {
+        id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+    }
+
+
+    const accessToken = jwtUtils.createToken(
+        jwtPayload,
+        config.jwt_access_secret,
+        config.jwt_access_expires_in as SignOptions
+    );
+
+    return { accessToken }
+}
+
+
 
 export const authService = {
     registerUserIntoDB,
     loginUserIntoDB,
-    getLoggedInUserFromDB
+    getLoggedInUserFromDB,
+    refreshToken
 }

@@ -18,6 +18,8 @@ router.post(
 
 router.get('/', auth(Role.CUSTOMER), bookingController.getMyBookings);
 
+// router.get('/', auth(Role.TECHNICIAN), bookingController.getMyBookings);
+
 
 router.get('/:id', auth(Role.CUSTOMER, Role.TECHNICIAN, Role.ADMIN), bookingController.getBookingById);
 
