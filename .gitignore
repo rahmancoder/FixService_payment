@@ -1,7 +1,5 @@
 node_modules
 /generated/prisma
 .env
-/generated/prisma
-.vercel
 dist
 .vercel
