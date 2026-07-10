@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-
 import httpStatus from "http-status";
 import { technicianService } from "./technician.service";
 import { catchAsync } from "../../utils/catchAsync";
@@ -45,6 +44,7 @@ const updateTechnicianAvailability = catchAsync(async (req: Request, res: Respon
     const userId = req.user?.id;
 
     const slots = req.body.slots;
+
     const result = await technicianService.updateTechnicianAvailabilityIntoDB(userId as string, slots);
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -121,6 +121,7 @@ const updateTechnicianBookingsStatus = catchAsync(async (req: Request, res: Resp
 
 
 const getTechnicianBookings = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
     const userId = req.user?.id;
     const status = req.query.status;
 

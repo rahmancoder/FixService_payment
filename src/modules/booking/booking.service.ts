@@ -1,5 +1,4 @@
 import { prisma } from "../../lib/prisma";
-
 import ApiError from "../../middlewares/ApiError";
 import httpStatus from "http-status";
 

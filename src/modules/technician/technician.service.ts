@@ -69,7 +69,7 @@ const updateTechnicianAvailabilityIntoDB = async (
         await tx.availability.deleteMany({ where: { technicianId: profile.id } });
 
         await tx.availability.createMany({
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
             data: slots.map(slot => ({
                 technicianId: profile.id,
                 dayOfWeek: slot.dayOfWeek,
@@ -100,7 +100,7 @@ const getAllTechniciansFromDB = async (filters: ITechnicianFilters) => {
 
     const { searchTerm, location, skill, ...paginationOptions } = filters;
 
-    const { page, limit, skip, sortOrder } =
+    const { page, limit, skip } =
         paginationHelper.calculatePagination(paginationOptions);
 
     const andConditions: Prisma.TechnicianProfileWhereInput[] = [];

@@ -1,14 +1,15 @@
 {
   "name": "fixservice_payment",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000F\u0000i\u0000x\u0000S\u0000e\u0000r\u0000v\u0000i\u0000c\u0000e\u0000_\u0000p\u0000a\u0000y\u0000m\u0000e\u0000n\u0000t\u0000\r\u0000 \u0000",
+  "description": "This is a fix-Service-Payment Platform Those who are Looking for Home Services",
   "main": "server.ts",
   "scripts": {
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "stripe:webhook": "stripe listen --forward-to localhost:5000/api/payments/webhook",
     "postinstall": "prisma generate",
-    "build": "tsup",
+    "build": "prisma generate && tsup",
+    "vercel-build": "prisma generate && tsup",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -1,4 +1,3 @@
-
 import { prisma } from "../../lib/prisma";
 import { v4 as uuidv4 } from 'uuid';
 import ApiError from "../../middlewares/ApiError";
@@ -67,9 +66,6 @@ const createPaymentIntoDB = async (userId: string, bookingId: string) => {
             transactionId,
             userId
         },
-
-        // success_url: `${process.env.app_url || 'http://localhost:5000'}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
-        // cancel_url: `${process.env.app_url || 'http://localhost:5000'}/payments/cancel?success=false`,
 
         success_url: `${config.app_url || 'http://localhost:5000'}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${config.app_url || 'http://localhost:5000'}/payments/cancel?success=false`,

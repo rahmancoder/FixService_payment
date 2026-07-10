@@ -21,8 +21,6 @@ declare global {
     }
 }
 
-// auth(Role.ADMIN, Role.CUSTOMER, Role.TECHNICIAN)
-// auth() => ...requiredRoles => [Role.ADMIN, Role.CUSTOMER, Role.TECHNICIAN]
 
 
 export const auth = (...requiredRoles: Role[]) => {

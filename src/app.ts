@@ -17,8 +17,6 @@ import { userRoutes } from "./modules/user/user.route";
 
 
 
-
-
 const app: Application = express();
 
 app.use(cors({
@@ -27,10 +25,7 @@ app.use(cors({
 }))
 
 
-// const endpointSecret = config.stripe_webhook_secret;
 
-// Stripe webhook needs the raw request body for signature verification,
-// so it must be registered BEFORE the json() body parser below.
 app.post(
     '/api/payments/webhook',
     express.raw({ type: 'application/json' })

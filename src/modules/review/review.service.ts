@@ -1,5 +1,4 @@
 import { prisma } from "../../lib/prisma";
-
 import ApiError from "../../middlewares/ApiError";
 import httpStatus from "http-status";
 
@@ -66,7 +65,6 @@ const createReviewIntoDB = async (
 
             data:
             {
-                // avgRating: stats._avg.rating || 0,
                 totalReviews: stats._count.rating,
             },
         });

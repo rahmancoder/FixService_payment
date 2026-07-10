@@ -9,12 +9,6 @@ import { serviceValidation } from "./service.validation";
 const router = Router();
 
 
-// router.post(
-//     '/',
-//     auth(Role.TECHNICIAN),
-
-//     serviceController.createService);
-
 
 
 router.post(
@@ -28,9 +22,8 @@ router.get("/", serviceController.getAllServices);
 
 // router.get("/technician", serviceController.getAllTechnician);
 
-
-
 // router.get("/technician/:id", serviceController.getTechnicianById);
+
 
 router.patch(
     '/update/:id',
@@ -38,6 +31,5 @@ router.patch(
     serviceController.updateService
 );
 
-// router.get("/categories");
 
 export const serviceRoutes = router;

@@ -1,17 +1,7 @@
-
-
 // Admin SEEDING Here
 
 import bcrypt from "bcryptjs";
 import config from "../src/config";
-// import { PrismaClient } from '@prisma/client';
-// import bcrypt from 'bcrypt';
-// import { PrismaClient, Role } from "../generated/prisma/client";
-
-// Default Category SEEDING Here as category is connected to our  Technician service
-
-
-
 
 import "dotenv/config";
 
@@ -29,11 +19,6 @@ const prisma = new PrismaClient({
 });
 
 
-// const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//     // log: ("error" | "warn"| "info"| "query"),
-//     // log: ["error" | "warn"| "info"| "query"],
-// });
 
 async function main() {
     const existingAdmin = await prisma.user.findUnique({

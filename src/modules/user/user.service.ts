@@ -1,11 +1,10 @@
 import ApiError from "../../middlewares/ApiError";
-
 import { prisma } from "../../lib/prisma";
-
 import httpStatus from "http-status";
 import { paginationHelper } from "../../utils/paginationHelper";
 import { Prisma } from "../../../generated/prisma/client";
 import { IServiceFilters } from "./user.interface";
+
 
 const getAllServicesFromDB = async (filters: IServiceFilters) => {
 

@@ -13,7 +13,7 @@ const router = Router();
 router.get('/services', userController.getAllServices);
 router.get('/services/:id', userController.getServiceById);
 
-// router.get('/', userController.getAllTechnicians);
+//used technicianController
 router.get('/', technicianController.getAllTechnicians);
 
 // router.get('/:id', userController.getTechnicianById);

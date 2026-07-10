@@ -35,31 +35,6 @@ const registerUserIntoDB = async (payload: IRegisterUser) => {
     const hashedPassword = await bcrypt.hash(password, Number(config.bcrypt_salt_rounds))
 
 
-
-    // const createdUser = await prisma.user.create({
-    //     data: {
-    //         name,
-    //         email,
-    //         password: hashedPassword,
-    //         role
-    //     }
-    // });
-
-
-
-    // const user = await prisma.user.findUnique({
-    //     where: {
-    //         id: createdUser.id,
-    //         email: createdUser.email || email
-    //     },
-    //     omit: {
-    //         password: true
-    //     },
-
-    // })
-
-
-
     // Needs to handle User Role : Technician  and role Admin shouldn't create  
 
     const result = await prisma.$transaction(async tx => {

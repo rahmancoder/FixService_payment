@@ -1,6 +1,4 @@
-
 import { NextFunction, Request, Response } from "express";
-
 import httpStatus from "http-status";
 import { serviceService } from "./service.service";
 import { catchAsync } from "../../utils/catchAsync";
@@ -8,9 +6,11 @@ import { sendResponse } from "../../utils/sendResponse";
 
 //01
 const createService = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user!.id
+    // const userId = req.user!.id
+    const userId = req.user?.id
     const payload = req.body;
-    const result = await serviceService.createServiceIntoDB(userId, payload);
+
+    const result = await serviceService.createServiceIntoDB(userId as string, payload);
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
         success: true,
