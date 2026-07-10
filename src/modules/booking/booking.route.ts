@@ -7,14 +7,24 @@ import { Router } from "express";
 import { auth } from "../../middlewares/auth";
 import { Role } from "../../../generated/prisma/enums";
 import { bookingController } from "./booking.controller";
+import validationRequest from "../../middlewares/validationRequest";
+import { bookingValidation } from "./booking.validation";
 
 const router = Router();
+
+// router.post(
+//     '/',
+//     auth(Role.CUSTOMER, Role.ADMIN),
+//     bookingController.createBooking
+// );
 
 router.post(
     '/',
     auth(Role.CUSTOMER, Role.ADMIN),
+    validationRequest(bookingValidation.bookingcreateZodSchema),
     bookingController.createBooking
 );
+
 
 router.get('/', auth(Role.CUSTOMER), bookingController.getMyBookings);
 

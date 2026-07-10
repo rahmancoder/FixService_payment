@@ -17,7 +17,13 @@ router.post("/register",
     validationRequest(authValidation.registerZodSchema),
     authController.registerUser);
 
-router.post("/login", authController.loginUser);
+// router.post("/login", authController.loginUser);
+
+router.post("/login",
+
+    validationRequest(authValidation.loginZodSchema),
+
+    authController.loginUser);
 
 
 router.get("/me",
