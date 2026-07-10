@@ -2,6 +2,8 @@ import { Router } from "express";
 import { technicianController } from "./technician.controller";
 import { auth } from "../../middlewares/auth";
 import { Role } from "../../../generated/prisma/enums";
+import validationRequest from "../../middlewares/validationRequest";
+import { technicianValidation } from "./technician.validation";
 
 const router = Router();
 
@@ -12,10 +14,14 @@ router.get('/single/:id', technicianController.getTechnicianById);
 
 router.put("/profile",
     auth(Role.TECHNICIAN),
+    validationRequest(technicianValidation.updateProfileZodSchema),
     technicianController.updateTechnicianProfile);
 // router.post("/availability", technicianController.loginUser);
 
-router.put("/availability", auth(Role.TECHNICIAN), technicianController.updateTechnicianAvailability);
+router.put("/availability",
+    auth(Role.TECHNICIAN),
+    validationRequest(technicianValidation.updateAvailabilityZodSchema),
+    technicianController.updateTechnicianAvailability);
 
 
 
@@ -23,7 +29,11 @@ router.put("/availability", auth(Role.TECHNICIAN), technicianController.updateTe
 // this route been handled for technician in booking modules
 router.get("/bookings", auth(Role.TECHNICIAN), technicianController.getTechnicianBookings);
 
-router.patch("/bookings/:id", auth(Role.TECHNICIAN), technicianController.updateTechnicianBookingsStatus);
+router.patch("/bookings/:id",
+    auth(Role.TECHNICIAN),
+    validationRequest(technicianValidation.updateBookingStatusZodSchema),
+
+    technicianController.updateTechnicianBookingsStatus);
 
 
 
