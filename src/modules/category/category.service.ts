@@ -32,11 +32,41 @@ const getCategoryByIdFromDB = async (id: number) => {
     return category;
 };
 
+const updateCategoryIntoDB = async (
+    id: number,
 
+    payload: {
+        name?: string;
+        description?: string
+    }) => {
+
+    await getCategoryByIdFromDB(id);
+
+    return prisma.category.update({
+        where: {
+            id
+        },
+        data: payload
+    });
+};
+
+
+const deleteCategoryIntoDB = async (id: number) => {
+
+    await getCategoryByIdFromDB(id);
+
+    return prisma.category.delete({
+        where: {
+            id
+        }
+    });
+};
 
 
 export const categoryService = {
 
     getAllCategoriesFromDB,
     getCategoryByIdFromDB,
+    updateCategoryIntoDB,
+    deleteCategoryIntoDB
 }

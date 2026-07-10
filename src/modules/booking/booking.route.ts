@@ -33,6 +33,7 @@ router.get('/', auth(Role.CUSTOMER), bookingController.getMyBookings);
 
 router.get('/:id', auth(Role.CUSTOMER, Role.TECHNICIAN, Role.ADMIN), bookingController.getBookingById);
 
+router.patch('/:id/cancel', auth(Role.CUSTOMER), bookingController.cancelBooking);
 
 
 export const bookingRoutes = router;

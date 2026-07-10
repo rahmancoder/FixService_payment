@@ -125,10 +125,48 @@ const getAllServicesFromDB = async (filters: IServiceFilters) => {
 };
 
 
+const updateServiceIntoDB = async (
+    serviceId: number,
+    technicianUserId: string,
+    payload: Partial<{
+        title: string;
+        description: string;
+        price: number;
+        categoryId: number;
+        location: string;
+        isActive: boolean;
+    }>) => {
+    const technicianProfile = await prisma.technicianProfile.findUnique({
+        where: {
+            userId: technicianUserId
+        },
+    });
 
+    const service = await prisma.service.findUnique({
+        where: {
+            id: serviceId
+        }
+    });
+
+    if (!service) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Service not found');
+    }
+
+    if (!technicianProfile || service.technicianId !== technicianProfile.id) {
+        throw new ApiError(httpStatus.FORBIDDEN, 'You are not allowed to update this service');
+    }
+
+    return prisma.service.update({
+        where: {
+            id: serviceId
+        },
+        data: payload
+    });
+};
 
 
 export const serviceService = {
     createServiceIntoDB,
-    getAllServicesFromDB
+    getAllServicesFromDB,
+    updateServiceIntoDB
 };

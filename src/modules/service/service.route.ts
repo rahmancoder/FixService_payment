@@ -32,6 +32,11 @@ router.get("/", serviceController.getAllServices);
 
 // router.get("/technician/:id", serviceController.getTechnicianById);
 
+router.patch(
+    '/update/:id',
+    auth(Role.TECHNICIAN),
+    serviceController.updateService
+);
 
 // router.get("/categories");
 

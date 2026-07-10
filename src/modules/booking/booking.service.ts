@@ -114,10 +114,48 @@ const getBookingByIdFromDB = async (bookingId: string, userId: string, role: str
 };
 
 
+const cancelBookingIntoDB = async (bookingId: string, customerId: string) => {
+
+    const booking = await prisma.booking.findUnique({
+        where: {
+            id: bookingId
+        }
+    });
+
+    if (!booking) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
+    }
+
+    if (booking.customerId !== customerId) {
+        throw new ApiError(httpStatus.FORBIDDEN, 'You are not allowed to cancel this booking');
+    }
+
+    const nonCancellableStatuses = ['IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'DECLINED'];
+
+    if (nonCancellableStatuses.includes(booking.status)) {
+        throw new ApiError(
+            httpStatus.BAD_REQUEST,
+            `Booking cannot be cancelled once it is ${booking.status}`
+        );
+    }
+
+    return prisma.booking.update({
+        where: {
+            id: bookingId
+        },
+        data: {
+            status: 'CANCELLED'
+        }
+    });
+};
+
+
+
 export const bookingService = {
     createBookingIntoDB,
     getMyBookingsFromDB,
-    getBookingByIdFromDB
+    getBookingByIdFromDB,
+    cancelBookingIntoDB,
 
 
 };
