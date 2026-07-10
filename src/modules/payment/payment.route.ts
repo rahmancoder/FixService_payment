@@ -11,6 +11,8 @@ import { Router } from "express";
 import { auth } from "../../middlewares/auth";
 import { Role } from "../../../generated/prisma/enums";
 import { paymentController } from "./payment.controller";
+import validationRequest from "../../middlewares/validationRequest";
+import { paymentValidation } from "./payment.validation";
 
 
 const router = Router();
@@ -19,6 +21,7 @@ const router = Router();
 router.post(
     '/create',
     auth(Role.CUSTOMER),
+    validationRequest(paymentValidation.createPaymentZodSchema),
     paymentController.createPayment
 );
 
