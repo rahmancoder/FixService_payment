@@ -298,6 +298,46 @@ const updateTechnicianBookingsStatusIntoDB = async (
 
 
 
+
+
+const getTechnicianBookingsFromDB = async (userId: string, statusFilter?: string) => {
+
+    const profile = await prisma.technicianProfile.findUnique({
+        where:
+        {
+            userId
+        }
+    });
+
+
+    if (!profile) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Technician profile not found');
+    }
+
+    return prisma.booking.findMany({
+        where: {
+            technicianId: profile.id,
+
+            ...(statusFilter ? { status: statusFilter as any } : {}),
+        },
+        include: {
+            customer:
+            {
+                select:
+                {
+                    id: true,
+                    name: true
+                }
+            },
+            service: true,
+            payment: true,
+        },
+        orderBy: { createdAt: 'desc' },
+    });
+};
+
+
+
 export const technicianService = {
     updateTechnicianProfileIntoDB,
     updateTechnicianAvailabilityIntoDB,
@@ -305,5 +345,7 @@ export const technicianService = {
     getAllTechniciansFromDB,
     getTechnicianByIdFromDB,
 
+
     updateTechnicianBookingsStatusIntoDB,
+    getTechnicianBookingsFromDB,
 };

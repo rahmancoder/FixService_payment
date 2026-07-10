@@ -119,6 +119,28 @@ const updateTechnicianBookingsStatus = catchAsync(async (req: Request, res: Resp
     });
 });
 
+
+const getTechnicianBookings = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+    const status = req.query.status;
+
+    // console.log(req.user);
+    // console.log(userId);
+
+    const result = await technicianService.getTechnicianBookingsFromDB(userId as string, status as string | undefined)
+    // const result = await technicianService.getTechnicianBookingsFromDB(userId as string)
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Technician's bookings retrieved successfully",
+        data: result,
+    });
+});
+
+
+
+
 export const technicianController = {
     updateTechnicianProfile,
     updateTechnicianAvailability,
@@ -127,4 +149,5 @@ export const technicianController = {
     getTechnicianById,
 
     updateTechnicianBookingsStatus,
+    getTechnicianBookings,
 };
