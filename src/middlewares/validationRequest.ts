@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodType } from 'zod';
 
-const validateRequest =
+const validationRequest =
     (schema: ZodType) =>
         async (req: Request, res: Response, next: NextFunction) => {
             try {
@@ -19,4 +19,4 @@ const validateRequest =
             }
         };
 
-export default validateRequest;
+export default validationRequest;
